@@ -1,0 +1,11 @@
+*_env
+*.backup.*
+credentials.txt
+node_modules
+.env
+.vscode
+recession_env
+*_backup
+
+Dockerfile
+*.yaml
