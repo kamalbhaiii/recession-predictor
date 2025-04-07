@@ -55,7 +55,7 @@ app.post('/predict', (req, res) => {
     let options = {
         mode: 'text',
         pythonPath: `${process.env.EXPRESS_PYTHON_PATH}`,
-        scriptPath: path.join(__dirname, '../python'),
+        scriptPath: `${process.env.EXPRESS_SCRIPT_PATH}`,
         args: [JSON.stringify(req.body.features)]
     };
 
