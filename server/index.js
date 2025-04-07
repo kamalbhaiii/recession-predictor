@@ -45,6 +45,12 @@ app.get('/test', (req,res)=>{
     })
 })
 
+app.get('/fetch', async (req,res) => {
+    const stats = await Data.find()
+
+    res.status(200).send(stats)  
+})
+
 app.post('/predict', (req, res) => {
     let options = {
         mode: 'text',
