@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 function App() {
   const chartCanvasRef = useRef(null);
   const [features, setFeatures] = useState(
-    JSON.stringify(Array(12).fill({ gdp: 0, inflation: 0, unemployment: 0 }), null, 2)
+    JSON.stringify(Array(12).fill({ cpi: 0, interest:0, bond: 0, m3:0, wti: 0 }), null, 2)
   );
   const [prediction, setPrediction] = useState(null);
   const [history, setHistory] = useState([]);
@@ -32,9 +32,11 @@ function App() {
       return parsed.every(
         (item) =>
           typeof item === "object" &&
-          "gdp" in item && typeof item.gdp === "number" &&
-          "inflation" in item && typeof item.inflation === "number" &&
-          "unemployment" in item && typeof item.unemployment === "number"
+          "cpi" in item && typeof item.cpi === "number" &&
+          "interest" in item && typeof item.interest === "number" &&
+          "bond" in item && typeof item.bond === "number" &&
+          "m3" in item && typeof item.m3 === "number" &&
+          "wti" in item && typeof item.wti === "number"
       );
     } catch {
       return false;

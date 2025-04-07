@@ -30,7 +30,7 @@ try:
     features = json.loads(sys.argv[1])
     print("Received features:", features)
 
-    features_array = np.array([[f['gdp'], f['inflation'], f['unemployment']] for f in features])
+    features_array = np.array([[f['cpi'], f['interest'], f['wti'], f['bond'], f['m3']] for f in features])
     print("Converted to numpy array:", features_array)
 
     # Normalize input
@@ -39,7 +39,7 @@ try:
     print("Scaled features:", features_scaled)
 
     # Reshape for LSTM
-    input_data = features_scaled.reshape((1, 12, 3))
+    input_data = features_scaled.reshape((1, 12, 5))
     print("Reshaped input for LSTM:", input_data.shape)
 
     # Predict

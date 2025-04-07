@@ -8,26 +8,26 @@ import os
 
 load_dotenv()
 
-# Load data (example: CSV from RBI or World Bank)
-data = pd.read_csv(os.getenv('PYTHON_PREPROCESSING_DATA'))  # Columns: Date, GDP, Inflation, Unemployment
-data['Date'] = pd.to_datetime(data['Date'])
-data.set_index('Date', inplace=True)
 
-# Define recession labels (e.g., 2 consecutive quarters of negative GDP growth)
-data['Recession'] = 0
+data = pd.read_csv(os.getenv('PYTHON_PREPROCESSING_DATA'))  
+data['date'] = pd.to_datetime(data['date'])
+data.set_index('date', inplace=True)
+
+
+data['recession'] = 0
 for i in range(6, len(data)):
-    if data['GDP'].iloc[i-6:i].pct_change().mean() < 0:  # Simplified recession rule
-        data['Recession'].iloc[i] = 1
+    if data['cpi'].iloc[i-6:i].pct_change().mean() < 0: 
+        data['recession'].iloc[i] = 1
 
-# Select features
-features = data[['GDP', 'Inflation', 'Unemployment']].values
-labels = data['Recession'].values
 
-# Normalize features
+features = data[['cpi', 'bond', 'm3', 'interest', 'wti']].values
+labels = data['recession'].values
+
+
 scaler = MinMaxScaler()
 features_scaled = scaler.fit_transform(features)
 
-# Create sequences (12-month sliding windows)
+
 def create_sequences(data, labels, seq_length=12):
     X, y = [], []
     for i in range(len(data) - seq_length):
@@ -38,7 +38,7 @@ def create_sequences(data, labels, seq_length=12):
 seq_length = 12
 X, y = create_sequences(features_scaled, labels, seq_length)
 
-# Split into train and test sets
+
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle=False)
 
 # Save preprocessed data (optional, for debugging)

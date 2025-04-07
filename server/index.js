@@ -3,6 +3,7 @@ const { PythonShell } = require('python-shell');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv')
+const path = require('path')
 
 dotenv.config()
 
@@ -47,8 +48,8 @@ app.get('/test', (req,res)=>{
 app.post('/predict', (req, res) => {
     let options = {
         mode: 'text',
-        pythonPath: `${process.env.EXPRESS_PYTHON_PATH || './recession_env/Scripts/python.exe'}`,
-        scriptPath: '../python',
+        pythonPath: `${process.env.EXPRESS_PYTHON_PATH}`,
+        scriptPath: path.join(__dirname, '../python'),
         args: [JSON.stringify(req.body.features)]
     };
 
