@@ -1,6 +1,9 @@
 services:
   server:
-    image: server:test
+    build: 
+      context: .
+      dockerfile: Dockerfile.server
+    image: recession_predictor_server:slim
     container_name: recession_predictor_server
     ports:
       - 5000:5000
@@ -12,3 +15,15 @@ services:
       - PYTHON_PKL_FILE=/app/python/scaler.pkl
       - PYTHON_LSTM_MODEL=/app/python/recession_lstm_model.h5
       - PYTHON_PREPROCESSING_DATA=/app/python/historical_data.csv
+  client:
+    build: 
+      context: .
+      dockerfile: Dockerfile.client
+    image: recession_predictor_client:alpine
+    container_name: recession_predictor_client
+    ports:
+      - 5173:5173
+    environment:
+      - VITE_BACKEND=http://localhost:5000
+    depends_on:
+      - server
