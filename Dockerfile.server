@@ -1,0 +1,19 @@
+FROM node:23-slim
+
+WORKDIR /app
+
+RUN apt-get upgrade -y && apt-get update -y && apt-get install python3 python3-pip python3-venv -y
+RUN python3 -m venv /app/python/recession_env
+
+COPY python/requirements.txt /app/python/
+COPY python /app/python/
+
+RUN /app/python/recession_env/bin/pip install -r /app/python/requirements.txt
+
+COPY /server/package*.json /app/server/
+COPY /server /app/server/
+
+WORKDIR /app/server
+RUN npm install
+
+CMD ["npm", "run", "dev"]

@@ -1,0 +1,29 @@
+services:
+  server:
+    build: 
+      context: .
+      dockerfile: Dockerfile.server
+    image: recession_predictor_server:slim
+    container_name: recession_predictor_server
+    ports:
+      - 5000:5000
+    environment:
+      - EXPRESS_PORT=5000
+      - EXPRESS_MONGO=mongodb+srv://kamal5201ks:BtMhTThKl7T9lCMO@recessiondata.u6h91hs.mongodb.net/?retryWrites=true&w=majority&appName=RecessionData
+      - EXPRESS_PYTHON_PATH=../python/recession_env/bin/python
+      - EXPRESS_SCRIPT_PATH=../python
+      - PYTHON_PKL_FILE=/app/python/scaler.pkl
+      - PYTHON_LSTM_MODEL=/app/python/recession_lstm_model.h5
+      - PYTHON_PREPROCESSING_DATA=/app/python/historical_data.csv
+  client:
+    build: 
+      context: .
+      dockerfile: Dockerfile.client
+    image: recession_predictor_client:alpine
+    container_name: recession_predictor_client
+    ports:
+      - 5173:5173
+    environment:
+      - VITE_BACKEND=http://localhost:5000
+    depends_on:
+      - server
