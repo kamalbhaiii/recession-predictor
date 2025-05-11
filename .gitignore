@@ -9,3 +9,5 @@ recession_env
 
 Dockerfile
 *.yaml
+*/venv
+*/.venv/
